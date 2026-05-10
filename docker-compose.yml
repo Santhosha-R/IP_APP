@@ -1,0 +1,44 @@
+name: ip_apps  #whole compose project name
+services:
+    fastapi_backend:
+        build:
+            context: ./fastapi
+        image: fastapi:latest
+        container_name: fastapi-container
+        ports:
+        - "8080:8000"
+        environment:
+            TEST: example
+            TEST1: exampledb
+        networks:
+            - ip_app_bridge
+        volumes: 
+            - fastapi_data:/app
+
+    flask_app:
+        build:
+            context: ./flask
+        image: flask:latest
+        container_name: flask-container
+        ports:
+        - "8081:5000"
+
+    nodejs:
+        build:
+            context: ./nodejs
+        image: nodejs:latest
+        container_name: nodejs-container
+        ports:
+        - "8082:3000"
+
+networks:
+    ip_app_bridge:
+        name: ip_app_bridge
+        driver: bridge
+
+volumes:
+    fastapi_data:
+    name: ip_app_fastapi_data
+    driver: local    
+
+
